@@ -23,10 +23,7 @@ public:
 	ImageManager& operator=(const ImageManager&) = delete;
 
 	Image* getImage(char _key);
-	map<char, Image*>::const_iterator getImageIteratorBegin();
-	map<char, Image*>::const_iterator getImageIteratorEnd();
 
-	
 	//GDI+ 초기화 선언 후 호출(BlockImages 변수 초기화)
 	void imageInitialize();
 };

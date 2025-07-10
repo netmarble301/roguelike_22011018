@@ -38,15 +38,6 @@ Image* ImageManager::getImage(char _key)
 	return nullptr; //찾지 못하면 nullptr 반환
 }
 
-map<char, Image*>::const_iterator ImageManager::getImageIteratorBegin()
-{
-	return BlockImages.begin();
-}
-
-map<char, Image*>::const_iterator ImageManager::getImageIteratorEnd()
-{
-	return BlockImages.end();
-}
 
 void ImageManager::imageInitialize()
 {
