@@ -2,15 +2,8 @@
 
 ImageManager::ImageManager()
 {
-	//GDI+ 초기화
-	GdiplusStartupInput gdiplusStartupInput;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
-
-	BlockImages['0'] = Image::FromFile(L"sand_4.png");
-	BlockImages['1'] = Image::FromFile(L"swamp_1.png");
-	BlockImages['P'] = Image::FromFile(L"angel.png");
-	BlockImages['F'] = Image::FromFile(L"enter_lair.png");
-	BlockImages['M'] = Image::FromFile(L"sphinx.png"); //여러 종류의 몬스터 어떻게 할까?
+	//수정 BlockImages 초기화를 여기서 하면 안 됨, GDI+ 초기화(GdiplusStartupInput gdiplusStartupInput;) 전에 static의 ImageManager 생성자가 먼저 호출이 되어서 Image::FromFile 가 실패하게 됨
+	//따로 BlockImages 초기화를 GDI+ 초기화 후 하도록 imageInitialize() 구현
 }
 
 ImageManager::~ImageManager()
@@ -25,9 +18,6 @@ ImageManager::~ImageManager()
 		}
 	}
 	BlockImages.clear(); //map 해제
-
-	//GDI+ 종료
-	GdiplusShutdown(gdiplusToken);
 }
 
 ImageManager& ImageManager::getInstance()
@@ -46,4 +36,23 @@ Image* ImageManager::getImage(char _key)
 	}
 
 	return nullptr; //찾지 못하면 nullptr 반환
+}
+
+map<char, Image*>::const_iterator ImageManager::getImageIteratorBegin()
+{
+	return BlockImages.begin();
+}
+
+map<char, Image*>::const_iterator ImageManager::getImageIteratorEnd()
+{
+	return BlockImages.end();
+}
+
+void ImageManager::imageInitialize()
+{
+	BlockImages['0'] = Image::FromFile(L"sand_4.png");
+	BlockImages['1'] = Image::FromFile(L"swamp_1.png");
+	BlockImages['P'] = Image::FromFile(L"angel.png");
+	BlockImages['F'] = Image::FromFile(L"enter_lair.png");
+	BlockImages['M'] = Image::FromFile(L"sphinx.png");
 }

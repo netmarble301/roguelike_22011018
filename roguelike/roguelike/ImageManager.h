@@ -13,8 +13,6 @@ class ImageManager
 {
 private:
 	map<char, Image*> BlockImages;
-	//GDI+ 토큰
-	ULONG_PTR gdiplusToken;
 	ImageManager();
 	~ImageManager();
 public:
@@ -24,7 +22,12 @@ public:
 	ImageManager(const ImageManager&) = delete;
 	ImageManager& operator=(const ImageManager&) = delete;
 
-	//
 	Image* getImage(char _key);
+	map<char, Image*>::const_iterator getImageIteratorBegin();
+	map<char, Image*>::const_iterator getImageIteratorEnd();
+
+	
+	//GDI+ 초기화 선언 후 호출(BlockImages 변수 초기화)
+	void imageInitialize();
 };
 

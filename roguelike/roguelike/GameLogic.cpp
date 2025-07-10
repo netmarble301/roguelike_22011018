@@ -1,6 +1,7 @@
 #include "GameLogic.h"
 #include "GameMap.h"
 #include "Player.h"
+#include "ImageManager.h"
 #include "framework.h"
 
 //GDI+ 토큰
@@ -12,9 +13,14 @@ LPCTSTR lpszClass = TEXT("심화프로젝트_정주환");				//제목 표시줄에 표시되는 내�
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
-	//GDI+ 초기화
+
+
+	//GDI+ 초기화(ImageManager의 생성자에 구현하는 것보다 여기에 구현하는 것이 더 좋음 WinMain이 winapi애플리케이션의 진입점이자 최상위 제어 지점이기 때문)
 	GdiplusStartupInput gdiplusStartupInput;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+	ImageManager::getInstance().imageInitialize(); //BlockImages 초기화(GDI+ 초기화 후 BlockImages 초기화 하기 위해서)
+
 
 	HWND hWnd;											//윈도우 핸들 선언
 	MSG Message;										//메세지 구조체 변수 선언
@@ -50,46 +56,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 		DispatchMessage(&Message);						//메세지를 윈도우의 메세지 처리 함수 WndProc로 전달
 	}
 
-	//GDI+ 종료
+
+	//GDI+ 종료(ImageManager의 소멸자에 구현하는 것보다 여기에 구현하는 것이 더 좋음)
 	GdiplusShutdown(gdiplusToken);
+
 
 	return (int)Message.wParam;							//탈출 코드. 프로그램 종료
 }
 
-//WndProc 안에 static 선언할까? 아니면 지역변수로?
+
 GameMap Map;
-Player P(Map.getPlayerPosition(), 10, 2, 5); //Player클래스에 플레이어 좌표 변수 필요 없나?
-//int px = P.getPointX();
-//int py = P.getPointY();
+Player P(Map.getPlayerPosition(), 10, 2, 5);
 POINT playerP = P.getPoint();
-map<char, Image*> BlockImages;
 int F = 1; //using namespace std 안에 int floor라는 변수가 있음 floor라는 변수명 사용 불가능
+ImageManager& ImgManager = ImageManager::getInstance();
 
-void SettingImage()
-{
-	//Imagemanager 따로 만들어 놔
-	BlockImages['0'] = Image::FromFile(L"sand_4.png");
-	BlockImages['1'] = Image::FromFile(L"swamp_1.png");
-	BlockImages['P'] = Image::FromFile(L"angel.png");
-	BlockImages['F'] = Image::FromFile(L"enter_lair.png");
-	BlockImages['M'] = Image::FromFile(L"sphinx.png"); //여러 종류의 몬스터 어떻게 할까?
-	
-	//이미지 로드 실패 여부 확인(하는 게 좋음?)
-}
-
-void DeleteBlockImage()
-{
-	map<char, Image*>::iterator iter;
-	for (iter = BlockImages.begin();iter != BlockImages.end();iter++)
-	{
-		if (iter->second)
-		{
-			delete iter->second; //이미지 해제
-			iter->second = nullptr; //포인터 nullptr로 설정(이렇게 하는 게 좋음?)
-		}
-	}
-	BlockImages.clear(); //map 해제
-}
 
 void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 {
@@ -132,23 +113,23 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 			// 맵 데이터에 따라 적절한 블록 이미지 선택 및 그리기
 			if (Map.getMapData(p) == '1')
 			{
-				graphics.DrawImage(BlockImages['1'], blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage('1'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
 			else if (Map.getMapData(p) == '0')
 			{
-				graphics.DrawImage(BlockImages['0'], blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-			}
-			else if (Map.getMapData(p) == 'P')
-			{
-				graphics.DrawImage(BlockImages['P'], blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage('0'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
 			else if (Map.getMapData(p) == 'M')
 			{
-				graphics.DrawImage(BlockImages['M'], blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage('M'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+			}
+			else if (Map.getMapData(p) == 'P')
+			{
+				graphics.DrawImage(ImgManager.getImage('P'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
 			else if (Map.getMapData(p) == 'F')
 			{
-				graphics.DrawImage(BlockImages['F'], blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage('F'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
 		}
 	}
@@ -197,7 +178,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	switch (iMessage) {
 	case WM_CREATE:
-		SettingImage();
 		return 0;
 
 	case WM_PAINT:
@@ -270,7 +250,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_DESTROY:
-		DeleteBlockImage();
 		PostQuitMessage(0);
 		return 0;
 	}
