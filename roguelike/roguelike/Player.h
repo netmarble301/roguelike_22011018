@@ -3,27 +3,26 @@
 
 class Player
 {
-protected:
-	//int playerPointX;
-	//int playerPointY;
+private:
 	POINT playerPoint;
 	int playerHp;
 	int playerAttack;
 	int playerDefense;
+	bool playerTurn;
 public:
-	Player(POINT _p, int _hp, int _attack, int _defense);
-	//int getPointX() const;
-	//void setPointX(int _x);
-	//int getPointY() const;
-	//void setPointY(int _y);
-	int getHp() const;
-	void setHp(int _hp);
-	int getAttack() const;
-	void setAttack(int _attack);
-	int getDefense() const;
-	void setDefense(int _defense);
+	Player(POINT _p, int _hp, int _attack, int _defense, bool _turn);
+	int getPlayerHp() const;
+	void setPlayerHp(int _hp);
+	int getPlayerAttack() const;
+	void setPlayerAttack(int _attack);
+	int getPlayerDefense() const;
+	void setPlayerDefense(int _defense);
+	POINT getPlayerPoint() const;
+	void setPlayerPoint(POINT _p);
+	bool getPlayerTurn() const;
+	void setPlayerTurn(bool _turn);
 
-	POINT getPoint() const;
-	void setPoint(POINT _p);
+	// 7/11 플레이어 기본 공격, 스킬 고민하기
+
 };
 

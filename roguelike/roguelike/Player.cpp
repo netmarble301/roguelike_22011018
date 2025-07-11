@@ -1,67 +1,55 @@
 #include "Player.h"
 
-Player::Player(POINT _p, int _hp, int _attack, int _defense) : playerPoint(_p), playerHp(_hp), playerAttack(_attack), playerDefense(_defense)
+Player::Player(POINT _p, int _hp, int _attack, int _defense, bool _turn) : playerPoint(_p), playerHp(_hp), playerAttack(_attack), playerDefense(_defense), playerTurn(_turn)
 {
 }
 
-/*
-int Player::getPointX() const
-{
-    return playerPointX;
-}
-
-void Player::setPointX(int _x)
-{
-    playerPointX = _x;
-}
-
-int Player::getPointY() const
-{
-    return playerPointY;
-}
-
-void Player::setPointY(int _y)
-{
-    playerPointY = _y;
-}
-*/
-
-int Player::getHp() const
+int Player::getPlayerHp() const
 {
     return playerHp;
 }
 
-void Player::setHp(int _hp)
+void Player::setPlayerHp(int _hp)
 {
     playerHp = _hp;
 }
 
-int Player::getAttack() const
+int Player::getPlayerAttack() const
 {
     return playerHp;
 }
 
-void Player::setAttack(int _attack)
+void Player::setPlayerAttack(int _attack)
 {
     playerAttack = _attack;
 }
 
-int Player::getDefense() const
+int Player::getPlayerDefense() const
 {
     return playerDefense;
 }
 
-void Player::setDefense(int _defense)
+void Player::setPlayerDefense(int _defense)
 {
     playerDefense = _defense;
 }
 
-POINT Player::getPoint() const
+POINT Player::getPlayerPoint() const
 {
     return playerPoint;
 }
 
-void Player::setPoint(POINT _p)
+void Player::setPlayerPoint(POINT _p)
 {
     playerPoint = _p;
+}
+
+bool Player::getPlayerTurn() const
+{
+    return playerTurn;
+}
+
+void Player::setPlayerTurn(bool _turn)
+{
+    playerTurn = _turn;
 }
