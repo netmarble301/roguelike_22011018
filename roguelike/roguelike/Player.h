@@ -10,7 +10,7 @@ private:
 	int playerDefense;
 	bool playerTurn;
 public:
-	Player(POINT _p, int _hp, int _attack, int _defense, bool _turn);
+	Player(POINT _p, int _hp, int _attack, int _defense);
 	int getPlayerHp() const;
 	void setPlayerHp(int _hp);
 	int getPlayerAttack() const;

@@ -1,9 +1,12 @@
 #pragma once
 #include <Windows.h>
+#include <string>
+using namespace std;
 
 class Monster //추상 클래스
 {
 private:
+	string monsterName;
 	POINT monsterPoint;
 	int monsterHp;
 	int monsterAttack;
@@ -15,6 +18,8 @@ public:
 	virtual int monsterBasicAttack() = 0; //순수 가상 함수1 기본공격
 	virtual void monsterSkill() = 0; //순수 가상 함수2 스킬
 
+	string getMonsterName() const;
+	void setMonsterName(string _name);
 	int getMonstertHp() const;
 	void setMonsterHp(int _hp);
 	int getMonsterAttack() const;

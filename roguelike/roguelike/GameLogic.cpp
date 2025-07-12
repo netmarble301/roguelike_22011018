@@ -2,6 +2,7 @@
 #include "GameMap.h"
 #include "Player.h"
 #include "ImageManager.h"
+#include "MonsterFactory.h"
 #include "framework.h"
 
 //GDI+ 토큰
@@ -67,9 +68,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 
 GameMap Map;
 Player P(Map.getPlayerPosition(), 10, 2, 5);
-POINT playerP = P.getPoint();
-int F = 1; //using namespace std 안에 int floor라는 변수가 있음 floor라는 변수명 사용 불가능
+POINT playerP = P.getPlayerPoint();
+vector<unique_ptr<Monster>> Monsters;
+int F = 1;
 ImageManager& ImgManager = ImageManager::getInstance();
+
+unique_ptr<Monster> createMonsterWithStats(const MonsterFactory& _factory, string _name, POINT _p)
+{
+	int hp = 0, attack = 0, defense = 0;
+	bool turn = false;
+	POINT p = _p;
+
+	if (_name == "Sphinx")
+	{
+		hp = 10;
+		attack = 3;
+		defense = 2;
+	}
+	else if (_name == "Orc")
+	{
+		hp = 8;
+		attack = 2;
+		defense = 1;
+	}
+
+	unique_ptr<Monster> monster = _factory.createMonster(p, hp, attack, defense, turn);
+
+	return monster;
+}
 
 
 void GamePaint(HWND hWnd, PAINTSTRUCT ps)
@@ -138,7 +164,7 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 	//문자 출력
 	//플레이어 상태
 	wstringstream ss1; //WinAPI 환경에서 다양한 타입의 데이터를 문자열로 만들고, 특히 유니코드(한글 등)를 안전하게 다루기 위한 가장 유연하고 현대적인 C++ 방법?
-	ss1 << L"플레이어 체력 : " << P.getHp();
+	ss1 << L"플레이어 체력 : " << P.getPlayerHp();
 	const wstring ws_Text1 = ss1.str(); //wstring으로 변환
 	const TCHAR* char_Text1 = ws_Text1.c_str(); //TCHAR* (const wchar_t* 또는 const char*)로 변환
 	Font font(L"Arial", 16); //폰트 및 크기
@@ -173,8 +199,7 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	//HDC hdc;
-	PAINTSTRUCT ps = {}; //일단 {} 초기화 해줌 GamePaint함수 사용하기 위해서
+	PAINTSTRUCT ps = {};
 
 	switch (iMessage) {
 	case WM_CREATE:
@@ -192,7 +217,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			--playerP.x;
 			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
 			{
-				P.setPoint(playerP);
+				P.setPlayerPoint(playerP);
 			}
 			else
 			{
@@ -203,7 +228,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			++playerP.x;
 			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
 			{
-				P.setPoint(playerP);
+				P.setPlayerPoint(playerP);
 			}
 			else
 			{
@@ -214,7 +239,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			--playerP.y;
 			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
 			{
-				P.setPoint(playerP);
+				P.setPlayerPoint(playerP);
 			}
 			else
 			{
@@ -225,7 +250,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			++playerP.y;
 			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
 			{
-				P.setPoint(playerP);
+				P.setPlayerPoint(playerP);
 			}
 			else
 			{
@@ -238,8 +263,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			//층수(텍스트) 변경
 			Map.initializeMap();
 			Map.generateMap();
-			P.setPoint(Map.getPlayerPosition());
-			playerP = P.getPoint();
+			P.setPlayerPoint(Map.getPlayerPosition());
+			playerP = P.getPlayerPoint();
 			++F;
 		}
 		else
