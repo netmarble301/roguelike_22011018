@@ -9,8 +9,6 @@
 using namespace std;
 
 //게임 맵
-//MapData[0].length() => 열
-//MapData.size() => 행
 #define MAP_COLS 30
 #define MAP_ROWS 30
 #define BLOCK_SIZE 16
@@ -46,7 +44,7 @@ public:
 	void createHorizontalCorridor(int x1, int x2, int y); //통로 수평 생성
 	void createVerticalCorridor(int y1, int y2, int x); //통로 수직 생성
 	void connectRooms(const GameRoom& r1, const GameRoom& r2); //방과 방을 통로 2개로 연결
-	void placeObject(); //오브젝트 랜덤 배치('P'와 'F' 같은 방에 나오지 않도록, 'M'가 다른 오브젝트 좌표와 겹치지 않도록 '0'에만 setMapData)
+	void placeObject(); //오브젝트 랜덤 배치('P'와 'F' 같은 방에 나오지 않도록, 그리고 'S', 'O'가 다른 오브젝트 좌표와 겹치지 않도록 '0'에만 setMapData)
 	POINT getPlayerPosition() const; //'P'의 좌표를 POINT 반환
 };
 

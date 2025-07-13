@@ -13,30 +13,28 @@ void GameManager::initializeGame()
 
     monsters.clear();
 
+    //GameLogic.cpp의 createMonsterWithStats() 함수 대신
+    //몬스터 생성 코드 너무 비효율적인가? 다시 수정
+    unique_ptr<MonsterFactory> sphinxFactory = make_unique<SphinxFactory>();
+    unique_ptr<MonsterFactory> orcFactory = make_unique<OrcFactory>();
+    char mapChar;
     for (int y = 0; y < map.getMapRows(); ++y) 
     {
         for (int x = 0; x < map.getMapCols(); ++x) 
         {
             POINT p = { x, y };
-            if (map.getMapData(p) == 'M') 
+            mapChar = map.getMapData(p);
+            if (mapChar == 'S')
             {
-                //GameLogic.cpp의 createMonsterWithStats() 함수 대신 여기에
-                string monsterType = (rand() % 2 == 0) ? "Sphinx" : "Orc";
-
-                unique_ptr<MonsterFactory> factory;
-
-                int hp, attack, defense;
-
-                if (monsterType == "Sphinx") {
-                    factory = make_unique<SphinxFactory>();
-                    hp = 10, attack = 3, defense = 2;
-                }
-                else { 
-                    factory = make_unique<OrcFactory>();
-                    hp = 8, attack = 2, defense = 1;
-                }
-
-                monsters.push_back(factory->createMonster(p, hp, attack, defense, false));
+                string monsterType = "Sphinx";
+                int hp = 10, attack = 3, defense = 2;
+                monsters.push_back(sphinxFactory->createMonster(p, hp, attack, defense));
+            }
+            else if (mapChar == 'O')
+            {
+                string monsterType = "Orc";
+                int hp = 8, attack = 2, defense = 1;
+                monsters.push_back(orcFactory->createMonster(p, hp, attack, defense));
             }
         }
     }

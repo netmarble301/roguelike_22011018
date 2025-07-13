@@ -217,9 +217,10 @@ void GameMap::placeObject()
     POINT f = { fX,fY };
     setMapData(f, 'F');
 
-    //'M' 배치
+    //몬스터 배치
     uniform_int_distribution<int> numMonstersDist(2, 4); //2개에서 4개의 몬스터
     int numMonstersToPlace = numMonstersDist(rng);
+    uniform_int_distribution<int> monsterTypeDist(0, 1); //몬스터 타입 결정
     for (int i = 0; i < numMonstersToPlace; ++i)
     {
         //모든 방 중에서 무작위로 선택
@@ -241,7 +242,9 @@ void GameMap::placeObject()
             mPos = { mX,mY };
         } while (getMapData(mPos) != '0'); //'0'인 블럭만 배치
 
-        setMapData(mPos, 'M');
+        int randomMonsterValue = monsterTypeDist(rng);
+        char monsterChar = (randomMonsterValue == 0) ? 'O' : 'S'; //만약 몬스터 3종류 이상이면 다른 방법으로
+        setMapData(mPos, monsterChar);
     }
 }
 

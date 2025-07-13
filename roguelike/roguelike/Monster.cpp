@@ -1,6 +1,6 @@
 #include "Monster.h"
 
-Monster::Monster(POINT _p, int _hp, int _attack, int _defense, bool _turn) : monsterPoint(_p), monsterHp(_hp), monsterAttack(_attack), monsterDefense(_defense), monsterTurn(_turn)
+Monster::Monster(POINT _p, int _hp, int _attack, int _defense) : monsterPoint(_p), monsterHp(_hp), monsterAttack(_attack), monsterDefense(_defense)
 {
 }
 
@@ -44,48 +44,47 @@ void Monster::setMonsterPoint(POINT _p)
 	monsterPoint = _p;
 }
 
-bool Monster::getMonsterTurn() const
+Sphinx::Sphinx(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
-	return monsterTurn;
-}
-
-void Monster::setMonsterTurn(bool _turn)
-{
-	monsterTurn = _turn;
-}
-
-Sphinx::Sphinx(POINT _p, int _hp, int _attack, int _defense, bool _turn) : Monster(_p, _hp, _attack, _defense, _turn)
-{
-	setMonsterName("Sphinx");
+	setMonsterType("Sphinx");
 }
 
 int Sphinx::monsterBasicAttack()
 {
+	//게임로그 추가
+	//플레이어가 이동 공격 후 바로 반응
+	return 0; //나중에 수정
 }
 
-void Sphinx::monsterSkill()
+int Sphinx::monsterSkill()
 {
+	//게임로그 추가
+	return 0; //나중에 수정
 }
 
-string Monster::getMonsterName() const
+string Monster::getMonsterType() const
 {
-	return monsterName;
+	return monsterType;
 }
 
-void Monster::setMonsterName(string _name)
+void Monster::setMonsterType(string _type)
 {
-	monsterName = _name;
+	monsterType = _type;
 }
 
-Orc::Orc(POINT _p, int _hp, int _attack, int _defense, bool _turn) : Monster(_p, _hp, _attack, _defense, _turn)
+Orc::Orc(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
-	setMonsterName("Orc");
+	setMonsterType("Orc");
 }
 
 int Orc::monsterBasicAttack()
 {
+	//게임로그 추가
+	return 0; //나중에 수정
 }
 
-void Orc::monsterSkill()
+int Orc::monsterSkill()
 {
+	//게임로그 추가
+	return 0; //나중에 수정
 }

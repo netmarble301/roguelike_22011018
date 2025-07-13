@@ -41,9 +41,19 @@ Image* ImageManager::getImage(char _key)
 
 void ImageManager::imageInitialize()
 {
+	//빈 공간
 	BlockImages['0'] = Image::FromFile(L"sand_4.png");
+
+	//벽
 	BlockImages['1'] = Image::FromFile(L"swamp_1.png");
-	BlockImages['P'] = Image::FromFile(L"angel.png");
+
+	//계단(다음 층 이동)
 	BlockImages['F'] = Image::FromFile(L"enter_lair.png");
-	BlockImages['M'] = Image::FromFile(L"sphinx.png");
+
+	//플레이어
+	BlockImages['P'] = Image::FromFile(L"angel.png");
+
+	//몬스터
+	BlockImages['S'] = Image::FromFile(L"sphinx.png");
+	BlockImages['O'] = Image::FromFile(L"orc.png");
 }

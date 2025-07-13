@@ -65,14 +65,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	return (int)Message.wParam;							//탈출 코드. 프로그램 종료
 }
 
-
+/*
 GameMap Map;
 Player P(Map.getPlayerPosition(), 10, 2, 5);
 POINT playerP = P.getPlayerPoint();
 vector<unique_ptr<Monster>> Monsters;
 int F = 1;
+*/
 ImageManager& ImgManager = ImageManager::getInstance();
-
+/*
 unique_ptr<Monster> createMonsterWithStats(const MonsterFactory& _factory, string _name, POINT _p)
 {
 	int hp = 0, attack = 0, defense = 0;
@@ -96,7 +97,7 @@ unique_ptr<Monster> createMonsterWithStats(const MonsterFactory& _factory, strin
 
 	return monster;
 }
-
+*/
 
 void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 {
