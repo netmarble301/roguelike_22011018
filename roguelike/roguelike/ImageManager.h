@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <string>
 using namespace std;
 //GDI+
 //#define WIN32_LEAN_AND_MEAN(거의 사용되지 않는 내용을 Windows 헤더에서 제외) 정의했기 때문에 작동 안 됨
@@ -12,7 +13,7 @@ using namespace Gdiplus;
 class ImageManager
 {
 private:
-	map<char, Image*> BlockImages;
+	map<string, Image*> BlockImages;
 	ImageManager();
 	~ImageManager();
 public:
@@ -22,7 +23,7 @@ public:
 	ImageManager(const ImageManager&) = delete;
 	ImageManager& operator=(const ImageManager&) = delete;
 
-	Image* getImage(char _key);
+	Image* getImage(string _key);
 
 	//GDI+ 초기화 선언 후 호출(BlockImages 변수 초기화)
 	void imageInitialize();

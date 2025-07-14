@@ -8,7 +8,7 @@ ImageManager::ImageManager()
 
 ImageManager::~ImageManager()
 {
-	map<char, Image*>::iterator iter;
+	map<string, Image*>::iterator iter;
 	for (iter = BlockImages.begin();iter != BlockImages.end();iter++)
 	{
 		if (iter->second)
@@ -26,7 +26,7 @@ ImageManager& ImageManager::getInstance()
     return IM;
 }
 
-Image* ImageManager::getImage(char _key)
+Image* ImageManager::getImage(string _key)
 {
 	auto it = BlockImages.find(_key); //find() : map의 멤버함수, key에 맞는 요소의 주소 반환
 
@@ -42,18 +42,22 @@ Image* ImageManager::getImage(char _key)
 void ImageManager::imageInitialize()
 {
 	//빈 공간
-	BlockImages['0'] = Image::FromFile(L"sand_4.png");
+	BlockImages["Empty"] = Image::FromFile(L"sand_4.png");
 
 	//벽
-	BlockImages['1'] = Image::FromFile(L"swamp_1.png");
+	BlockImages["Wall"] = Image::FromFile(L"swamp_1.png");
 
 	//계단(다음 층 이동)
-	BlockImages['F'] = Image::FromFile(L"enter_lair.png");
+	BlockImages["Floor"] = Image::FromFile(L"enter_lair.png");
 
 	//플레이어
-	BlockImages['P'] = Image::FromFile(L"angel.png");
+	BlockImages["Player"] = Image::FromFile(L"angel.png");
 
 	//몬스터
-	BlockImages['S'] = Image::FromFile(L"sphinx.png");
-	BlockImages['O'] = Image::FromFile(L"orc.png");
+	BlockImages["Sphinx"] = Image::FromFile(L"sphinx.png");
+	BlockImages["Orc"] = Image::FromFile(L"orc.png");
+	//...
+
+	//아이템
+	//...
 }

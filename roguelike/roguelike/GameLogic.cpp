@@ -5,6 +5,10 @@
 #include "MonsterFactory.h"
 #include "framework.h"
 
+//잠깐 추가
+#include "GameManager.h"
+#include <memory>
+
 //GDI+ 토큰
 ULONG_PTR gdiplusToken;
 
@@ -99,6 +103,9 @@ unique_ptr<Monster> createMonsterWithStats(const MonsterFactory& _factory, strin
 }
 */
 
+
+GameManager manager; //확인용
+const vector<unique_ptr<Monster>>& allMonsters = manager.getMonsters(); //확인용
 void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 {
 	HDC hdc = BeginPaint(hWnd, &ps);
@@ -131,6 +138,8 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 
 	// 4. 맵 그리기
 	POINT p;
+	char mapChar;
+	string monsterType;
 	for (int y = 0; y < Map.getMapRows(); ++y) {
 		for (int x = 0; x < Map.getMapCols(); ++x) {
 			// 각 블록의 실제 화면 좌표 계산
@@ -138,25 +147,48 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 			int blockDrawY = mapStartY + (y * BLOCK_SIZE);
 			p = { x,y };
 			// 맵 데이터에 따라 적절한 블록 이미지 선택 및 그리기
-			if (Map.getMapData(p) == '1')
+			mapChar = Map.getMapData(p);
+			//if (Map.getMapData(p) == '1')
+			if (mapChar == '1')
 			{
-				graphics.DrawImage(ImgManager.getImage('1'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage("Wall"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
-			else if (Map.getMapData(p) == '0')
+			//else if (Map.getMapData(p) == '0')
+			else if (mapChar == '0')
 			{
-				graphics.DrawImage(ImgManager.getImage('0'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage("Empty"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
-			else if (Map.getMapData(p) == 'M')
+			//else if (Map.getMapData(p) == 'M')
+			else if (mapChar == 'M')
 			{
-				graphics.DrawImage(ImgManager.getImage('M'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				//아... 그냥 MapData에서 몬스터를 'M' 통일 후 monsterType으로 몬스터 종류 구분 괜히 했나...
+				for (const auto& monsterPtr : allMonsters)
+				{
+					if (monsterPtr->getMonsterPoint().x == p.x && monsterPtr->getMonsterPoint().y == p.y) //구조체는 비교연산자(예 operator==)가 정의되어 있지 않음.. 그냥 p.x, p.y 이렇게 따로 구분 해야할 듯 아니면 직접 추가하거나
+					{
+						monsterType = monsterPtr->getMonsterType();
+						if (monsterType == "Sphinx")
+						{
+							graphics.DrawImage(ImgManager.getImage("Sphinx"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+						}
+						else if (monsterType == "Orc")
+						{
+							graphics.DrawImage(ImgManager.getImage("Orc"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+						}
+						//...
+					}
+				}
+				//graphics.DrawImage(ImgManager.getImage(""), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
-			else if (Map.getMapData(p) == 'P')
+			//else if (Map.getMapData(p) == 'P')
+			else if (mapChar == 'P')
 			{
-				graphics.DrawImage(ImgManager.getImage('P'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage("Player"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
-			else if (Map.getMapData(p) == 'F')
+			//else if (Map.getMapData(p) == 'F')
+			else if (mapChar == 'F')
 			{
-				graphics.DrawImage(ImgManager.getImage('F'), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+				graphics.DrawImage(ImgManager.getImage("Floor"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 			}
 		}
 	}
