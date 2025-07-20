@@ -1,12 +1,10 @@
 #pragma once
-#include <Windows.h>
-#include <string>
+#include <windows.h>
 using namespace std;
 
 class Monster //추상 클래스
 {
 private:
-	string monsterType; //게임 로그 이름 출력용
 	POINT monsterPoint;
 	int monsterHp;
 	int monsterAttack;
@@ -14,11 +12,8 @@ private:
 public:
 	Monster(POINT _p, int _hp, int _attack, int _defense);
 	virtual ~Monster() = default;
-	virtual int monsterBasicAttack() = 0; //순수 가상 함수1 기본공격
-	virtual int monsterSkill() = 0; //순수 가상 함수2 스킬
+	virtual int monsterAction() = 0; //순수 가상 함수
 
-	string getMonsterType() const;
-	void setMonsterType(string _type);
 	int getMonstertHp() const;
 	void setMonsterHp(int _hp);
 	int getMonsterAttack() const;
@@ -33,17 +28,13 @@ class Sphinx : public Monster
 {
 public:
 	Sphinx(POINT _p, int _hp, int _attack, int _defense);
-	// 7/11 sphinx 기본공격, 스킬 어떻게 할지 고민하기
-	int monsterBasicAttack() override;
-	int monsterSkill() override;
+	int monsterAction() override; //기본 공격 or 스킬 랜덤 적용
 };
 
 class Orc : public Monster
 {
 public:
 	Orc(POINT _p, int _hp, int _attack, int _defense);
-	// 7/11 오크 기본공격, 스킬 어떻게 할지 고민하기
-	int monsterBasicAttack() override;
-	int monsterSkill() override;
+	int monsterAction() override; //기본 공격 or 스킬 랜덤 적용
 };
 

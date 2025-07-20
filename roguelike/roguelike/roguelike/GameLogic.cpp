@@ -1,13 +1,14 @@
-#include "GameLogic.h"
-#include "GameMap.h"
-#include "Player.h"
 #include "ImageManager.h"
-#include "MonsterFactory.h"
 #include "framework.h"
-
-//잠깐 추가
 #include "GameManager.h"
-#include <memory>
+
+//게임 창 크기
+#define WINDOW_WIDTH 900
+#define WINDOW_HEIGHT 700
+
+//게임 창 좌표
+#define WINDOW_X 100
+#define WINDOW_Y 50
 
 //GDI+ 토큰
 ULONG_PTR gdiplusToken;
@@ -18,14 +19,11 @@ LPCTSTR lpszClass = TEXT("심화프로젝트_정주환");				//제목 표시줄에 표시되는 내�
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
-
-
 	//GDI+ 초기화(ImageManager의 생성자에 구현하는 것보다 여기에 구현하는 것이 더 좋음 WinMain이 winapi애플리케이션의 진입점이자 최상위 제어 지점이기 때문)
 	GdiplusStartupInput gdiplusStartupInput;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 	ImageManager::getInstance().imageInitialize(); //BlockImages 초기화(GDI+ 초기화 후 BlockImages 초기화 하기 위해서)
-
 
 	HWND hWnd;											//윈도우 핸들 선언
 	MSG Message;										//메세지 구조체 변수 선언
@@ -48,7 +46,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 
 	RegisterClass(&WndClass);							//WNDCLASS 구조체의 번지를 전달
 
-
 	hWnd = CreateWindow(lpszClass, lpszClass,			//윈도우를 생성
 		WS_OVERLAPPED | WS_SYSMENU, WINDOW_X, WINDOW_Y, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, (HMENU)NULL, hInstance, NULL);
 
@@ -61,59 +58,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 		DispatchMessage(&Message);						//메세지를 윈도우의 메세지 처리 함수 WndProc로 전달
 	}
 
-
 	//GDI+ 종료(ImageManager의 소멸자에 구현하는 것보다 여기에 구현하는 것이 더 좋음)
 	GdiplusShutdown(gdiplusToken);
-
 
 	return (int)Message.wParam;							//탈출 코드. 프로그램 종료
 }
 
-/*
-GameMap Map;
-Player P(Map.getPlayerPosition(), 10, 2, 5);
-POINT playerP = P.getPlayerPoint();
-vector<unique_ptr<Monster>> Monsters;
-int F = 1;
-*/
 ImageManager& ImgManager = ImageManager::getInstance();
-/*
-unique_ptr<Monster> createMonsterWithStats(const MonsterFactory& _factory, string _name, POINT _p)
-{
-	int hp = 0, attack = 0, defense = 0;
-	bool turn = false;
-	POINT p = _p;
 
-	if (_name == "Sphinx")
-	{
-		hp = 10;
-		attack = 3;
-		defense = 2;
-	}
-	else if (_name == "Orc")
-	{
-		hp = 8;
-		attack = 2;
-		defense = 1;
-	}
+GameManager manager;
 
-	unique_ptr<Monster> monster = _factory.createMonster(p, hp, attack, defense, turn);
-
-	return monster;
-}
-*/
-
-
-GameManager manager; //확인용
-const vector<unique_ptr<Monster>>& allMonsters = manager.getMonsters(); //확인용
 void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 {
 	HDC hdc = BeginPaint(hWnd, &ps);
-	
 
 	// 1. 맵의 전체 픽셀 크기 계산
-	int mapPixelWidth = Map.getMapCols() * BLOCK_SIZE;
-	int mapPixelHeight = Map.getMapRows() * BLOCK_SIZE;
+	int mapPixelWidth = MAP_COLS * BLOCK_SIZE;
+	int mapPixelHeight = MAP_ROWS * BLOCK_SIZE;
 
 	// 2. 윈도우 클라이언트 영역의 크기 가져오기
 	RECT clientRect;
@@ -138,66 +99,23 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 
 	// 4. 맵 그리기
 	POINT p;
-	char mapChar;
-	string monsterType;
-	for (int y = 0; y < Map.getMapRows(); ++y) {
-		for (int x = 0; x < Map.getMapCols(); ++x) {
+	for (int y = 0; y < MAP_ROWS; ++y) 
+	{
+		for (int x = 0; x < MAP_COLS; ++x) 
+		{
 			// 각 블록의 실제 화면 좌표 계산
 			int blockDrawX = mapStartX + (x * BLOCK_SIZE);
 			int blockDrawY = mapStartY + (y * BLOCK_SIZE);
 			p = { x,y };
 			// 맵 데이터에 따라 적절한 블록 이미지 선택 및 그리기
-			mapChar = Map.getMapData(p);
-			//if (Map.getMapData(p) == '1')
-			if (mapChar == '1')
-			{
-				graphics.DrawImage(ImgManager.getImage("Wall"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-			}
-			//else if (Map.getMapData(p) == '0')
-			else if (mapChar == '0')
-			{
-				graphics.DrawImage(ImgManager.getImage("Empty"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-			}
-			//else if (Map.getMapData(p) == 'M')
-			else if (mapChar == 'M')
-			{
-				//아... 그냥 MapData에서 몬스터를 'M' 통일 후 monsterType으로 몬스터 종류 구분 괜히 했나...
-				for (const auto& monsterPtr : allMonsters)
-				{
-					if (monsterPtr->getMonsterPoint().x == p.x && monsterPtr->getMonsterPoint().y == p.y) //구조체는 비교연산자(예 operator==)가 정의되어 있지 않음.. 그냥 p.x, p.y 이렇게 따로 구분 해야할 듯 아니면 직접 추가하거나
-					{
-						monsterType = monsterPtr->getMonsterType();
-						if (monsterType == "Sphinx")
-						{
-							graphics.DrawImage(ImgManager.getImage("Sphinx"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-						}
-						else if (monsterType == "Orc")
-						{
-							graphics.DrawImage(ImgManager.getImage("Orc"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-						}
-						//...
-					}
-				}
-				//graphics.DrawImage(ImgManager.getImage(""), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-			}
-			//else if (Map.getMapData(p) == 'P')
-			else if (mapChar == 'P')
-			{
-				graphics.DrawImage(ImgManager.getImage("Player"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-			}
-			//else if (Map.getMapData(p) == 'F')
-			else if (mapChar == 'F')
-			{
-				graphics.DrawImage(ImgManager.getImage("Floor"), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
-			}
+			graphics.DrawImage(ImgManager.getImage(manager.getMap().getMapData(p)), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 		}
 	}
-
 
 	//문자 출력
 	//플레이어 상태
 	wstringstream ss1; //WinAPI 환경에서 다양한 타입의 데이터를 문자열로 만들고, 특히 유니코드(한글 등)를 안전하게 다루기 위한 가장 유연하고 현대적인 C++ 방법?
-	ss1 << L"플레이어 체력 : " << P.getPlayerHp();
+	ss1 << L"플레이어 체력 : " << manager.getPlayer().getPlayerHp();
 	const wstring ws_Text1 = ss1.str(); //wstring으로 변환
 	const TCHAR* char_Text1 = ws_Text1.c_str(); //TCHAR* (const wchar_t* 또는 const char*)로 변환
 	Font font(L"Arial", 16); //폰트 및 크기
@@ -211,12 +129,11 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 	graphics.DrawString(char_Text2, -1, &font, PointF(680, 50), &textBrush);
 	//던전 층수
 	wstringstream ss3;
-	ss3 << L"던전 층수 : " << F;
+	ss3 << L"던전 층수 : " << manager.getCurrentFloor();
 	const wstring ws_Text3 = ss3.str(); //wstring으로 변환
 	const TCHAR* char_Text3 = ws_Text3.c_str(); //TCHAR* (const wchar_t* 또는 const char*)로 변환
 	graphics.DrawString(char_Text3, -1, &font, PointF(680, 20), &textBrush);
 	//던전 층수, 플레이어 상태 등 출력하기
-
 
 	// 모든 그리기가 메모리 DC에서 완료되면, 한 번에 화면으로 전송합니다.
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, hMemDC, 0, 0, SRCCOPY);
@@ -229,13 +146,17 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 	EndPaint(hWnd, &ps);
 }
 
+POINT playerPoint;
+int mapData;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps = {};
 
-	switch (iMessage) {
+	switch (iMessage) 
+	{
 	case WM_CREATE:
+		manager.initializeGame();
 		return 0;
 
 	case WM_PAINT:
@@ -243,66 +164,66 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_KEYDOWN:
-		Map.setMapData(playerP, '0');
+		playerPoint = manager.getPlayer().getPlayerPoint();
+		manager.getMap().setMapData(playerPoint, 0);
 		switch (wParam)
 		{
 		case VK_LEFT: // 왼쪽 방향키
-			--playerP.x;
-			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
+			--playerPoint.x;
+			mapData = manager.getMap().getMapData(playerPoint);
+			if (mapData == 0 || mapData == 2)
 			{
-				P.setPlayerPoint(playerP);
+				manager.getPlayer().setPlayerPoint(playerPoint);
 			}
 			else
 			{
-				++playerP.x;
+				++playerPoint.x;
 			}
 			break;
 		case VK_RIGHT: // 오른쪽 방향키
-			++playerP.x;
-			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
+			++playerPoint.x;
+			mapData = manager.getMap().getMapData(playerPoint);
+			if (mapData == 0 || mapData == 2)
 			{
-				P.setPlayerPoint(playerP);
+				manager.getPlayer().setPlayerPoint(playerPoint);
 			}
 			else
 			{
-				--playerP.x;
+				--playerPoint.x;
 			}
 			break;
 		case VK_UP: // 위쪽 방향키
-			--playerP.y;
-			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
+			--playerPoint.y;
+			mapData = manager.getMap().getMapData(playerPoint);
+			if (mapData == 0 || mapData == 2)
 			{
-				P.setPlayerPoint(playerP);
+				manager.getPlayer().setPlayerPoint(playerPoint);
 			}
 			else
 			{
-				++playerP.y;
+				++playerPoint.y;
 			}
 			break;
 		case VK_DOWN: // 아래쪽 방향키
-			++playerP.y;
-			if (Map.getMapData(playerP) != '1' && Map.getMapData(playerP) != 'M')
+			++playerPoint.y;
+			mapData = manager.getMap().getMapData(playerPoint);
+			if (mapData == 0 || mapData == 2)
 			{
-				P.setPlayerPoint(playerP);
+				manager.getPlayer().setPlayerPoint(playerPoint);
 			}
 			else
 			{
-				--playerP.y;
+				--playerPoint.y;
 			}
 			break;
 		}
-		if (Map.getMapData(playerP) == 'F')
+		if (mapData == 2)
 		{
-			//층수(텍스트) 변경
-			Map.initializeMap();
-			Map.generateMap();
-			P.setPlayerPoint(Map.getPlayerPosition());
-			playerP = P.getPlayerPoint();
-			++F;
+			manager.nextFloor();
 		}
 		else
 		{
-			Map.setMapData(playerP, 'P');
+			manager.getMap().setMapData(playerPoint, 3);
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
 		return 0;

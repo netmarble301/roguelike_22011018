@@ -1,8 +1,7 @@
 #include "Player.h"
 
-Player::Player(POINT _p, int _hp, int _attack, int _defense) : playerPoint(_p), playerHp(_hp), playerAttack(_attack), playerDefense(_defense)
+Player::Player(POINT _p, int _hp, int _attack, int _defense) : playerPoint(_p), playerHp(_hp), playerAttack(_attack), playerDefense(_defense), playerTurn(true)
 {
-    setPlayerTurn(true);
 }
 
 int Player::getPlayerHp() const

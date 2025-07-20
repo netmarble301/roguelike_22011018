@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 
 class Player
 {
@@ -11,6 +11,8 @@ private:
 	bool playerTurn;
 public:
 	Player(POINT _p, int _hp, int _attack, int _defense);
+	virtual ~Player() = default;
+
 	int getPlayerHp() const;
 	void setPlayerHp(int _hp);
 	int getPlayerAttack() const;
@@ -22,7 +24,6 @@ public:
 	bool getPlayerTurn() const;
 	void setPlayerTurn(bool _turn);
 
-	// 7/11 플레이어 기본 공격, 스킬 고민하기
-
+	//플레이어 action(기본 공격 or 스킬)함수 구현
 };
 

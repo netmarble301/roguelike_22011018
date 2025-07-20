@@ -46,45 +46,18 @@ void Monster::setMonsterPoint(POINT _p)
 
 Sphinx::Sphinx(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
-	setMonsterType("Sphinx");
 }
 
-int Sphinx::monsterBasicAttack()
+int Sphinx::monsterAction()
 {
-	//게임로그 추가
-	//플레이어가 이동 공격 후 바로 반응
-	return 0; //나중에 수정
-}
-
-int Sphinx::monsterSkill()
-{
-	//게임로그 추가
-	return 0; //나중에 수정
-}
-
-string Monster::getMonsterType() const
-{
-	return monsterType;
-}
-
-void Monster::setMonsterType(string _type)
-{
-	monsterType = _type;
+	return 0;
 }
 
 Orc::Orc(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
-	setMonsterType("Orc");
 }
 
-int Orc::monsterBasicAttack()
+int Orc::monsterAction()
 {
-	//게임로그 추가
-	return 0; //나중에 수정
-}
-
-int Orc::monsterSkill()
-{
-	//게임로그 추가
-	return 0; //나중에 수정
+	return 0;
 }
