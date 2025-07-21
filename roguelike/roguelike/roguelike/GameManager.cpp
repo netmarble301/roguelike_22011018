@@ -77,3 +77,15 @@ void GameManager::setCurrentFloor(int _floor)
 {
     currentFloor = _floor;
 }
+
+void GameManager::monsterTurn()
+{
+    for (auto iter = monsters.begin(); iter != monsters.end(); ++iter)
+    {
+        if (1) //그냥 랜덤 이동, 3x3범위에 플레이어 발견 및 추격, 1칸 근접한 플레이어 기본 공격 또는 스킬
+        {
+            //~
+        }
+        (*iter)->monsterMove(getMap()); //일단 실험용 모두 계속 랜덤 이동하도록
+    }
+}

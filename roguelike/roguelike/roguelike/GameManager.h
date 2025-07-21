@@ -1,5 +1,4 @@
 #pragma once
-#include "GameMap.h"
 #include "Player.h"
 #include "MonsterFactory.h"
 
@@ -24,5 +23,7 @@ public:
     vector<unique_ptr<Monster>>& getMonsters();
     int getCurrentFloor() const;
     void setCurrentFloor(int _floor);
+
+    void monsterTurn();
 };
 

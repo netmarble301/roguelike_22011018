@@ -225,6 +225,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		{
 			manager.getMap().setMapData(playerPoint, 3);
 		}
+
+		//플레이어 기본 공격, 스킬 키를 무엇으로?
+		//~
+
+		//몬스터 턴
+		manager.monsterTurn();
+
 		InvalidateRect(hWnd, NULL, FALSE);
 		return 0;
 

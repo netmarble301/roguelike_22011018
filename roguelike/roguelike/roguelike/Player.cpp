@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(POINT _p, int _hp, int _attack, int _defense) : playerPoint(_p), playerHp(_hp), playerAttack(_attack), playerDefense(_defense), playerTurn(true)
+Player::Player(POINT _p, int _hp, int _attack, int _defense) : playerPoint(_p), playerHp(_hp), playerAttack(_attack), playerDefense(_defense)
 {
 }
 
@@ -42,14 +42,4 @@ POINT Player::getPlayerPoint() const
 void Player::setPlayerPoint(POINT _p)
 {
     playerPoint = _p;
-}
-
-bool Player::getPlayerTurn() const
-{
-    return playerTurn;
-}
-
-void Player::setPlayerTurn(bool _turn)
-{
-    playerTurn = _turn;
 }
