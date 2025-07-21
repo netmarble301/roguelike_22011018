@@ -129,6 +129,11 @@ int Monster::monsterBasicAttack(GameMap& _map)
 	return 0;
 }
 
+bool Monster::searchPlayer(GameMap& _map)
+{
+	return (_map.getPlayerPoint().x >= getMonsterPoint().x - 2 && _map.getPlayerPoint().x <= getMonsterPoint().x + 2 && _map.getPlayerPoint().y >= getMonsterPoint().y - 2 && _map.getPlayerPoint().y <= getMonsterPoint().y + 2);
+}
+
 Orc::Orc(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
 	setMonsterNum(5);

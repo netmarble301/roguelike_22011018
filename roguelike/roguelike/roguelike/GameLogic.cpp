@@ -230,6 +230,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		//~
 
 		//몬스터 턴
+		//if (manager.)
 		manager.monsterTurn();
 
 		InvalidateRect(hWnd, NULL, FALSE);

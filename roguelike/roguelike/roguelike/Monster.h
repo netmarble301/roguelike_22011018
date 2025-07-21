@@ -18,6 +18,7 @@ public:
 	virtual void monsterMove(GameMap& _map); //가상 함수, 랜덤이동
 	virtual void monsterChase(GameMap& _map); //가상 함수, 추격
 	virtual int monsterBasicAttack(GameMap& _map); //가상 함수, 기본 공격
+	virtual bool searchPlayer(GameMap& _map); //가상 함수, 플레이어 탐색 5x5(추격과 연계)
 
 	int getMonstertHp() const;
 	void setMonsterHp(int _hp);

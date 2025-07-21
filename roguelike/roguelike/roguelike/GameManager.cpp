@@ -82,10 +82,20 @@ void GameManager::monsterTurn()
 {
     for (auto iter = monsters.begin(); iter != monsters.end(); ++iter)
     {
-        if (1) //그냥 랜덤 이동, 3x3범위에 플레이어 발견 및 추격, 1칸 근접한 플레이어 기본 공격 또는 스킬
+        /*
+        if ((*iter)->searchPlayer(getMap())) //그냥 랜덤 이동, 3x3범위에 플레이어 발견 및 추격, 1칸 근접한 플레이어 기본 공격 또는 스킬
         {
-            //~
+            //추격
         }
+        else if ()
+        {
+            //플레이어 근접, 기본 공격 아니면 스킬 랜덤 사용
+        }
+        else
+        {
+            //랜덤 이동
+        }
+        */
         (*iter)->monsterMove(getMap()); //일단 실험용 모두 계속 랜덤 이동하도록
     }
 }
