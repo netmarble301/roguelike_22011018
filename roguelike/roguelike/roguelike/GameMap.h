@@ -11,6 +11,13 @@ using namespace std;
 #define MAP_ROWS 30
 #define BLOCK_SIZE 16
 
+//POINT 구조체에 대한 operator== 정의 추가
+//unordered_map이 키를 비교할 때 필요
+inline bool operator==(const POINT& p1, const POINT& p2) {
+	return p1.x == p2.x && p1.y == p2.y;
+}
+
+
 enum class MapDataType
 {
 	EMPTY=0,
@@ -47,7 +54,7 @@ public:
 	GameMap();
 	virtual ~GameMap() = default;
 
-	int getMapData(POINT _p);
+	int getMapData(POINT _p) const;
 	void setMapData(POINT _p, int _c);
 
 	void initializeMap(); //맵을 1로 초기화
@@ -58,5 +65,7 @@ public:
 	void connectRooms(const GameRoom& r1, const GameRoom& r2); //방과 방을 통로 2개로 연결
 	void placeObject(); //오브젝트 랜덤 배치
 	POINT getPlayerPoint() const; //플레이어의 좌표 반환
+
+	const vector<GameRoom>& getRooms() const; //방 전체 정보
 };
 

@@ -5,7 +5,7 @@ GameMap::GameMap() : rng(chrono::system_clock::now().time_since_epoch().count())
 	generateMap();
 }
 
-int GameMap::getMapData(POINT _p)
+int GameMap::getMapData(POINT _p) const
 {
     return (int)mapDataArr[_p.y][_p.x];
 }
@@ -238,4 +238,9 @@ void GameMap::placeObject() //오브젝트 랜덤 배치
 POINT GameMap::getPlayerPoint() const
 {
     return playerPoint;
+}
+
+const vector<GameRoom>& GameMap::getRooms() const
+{
+    return rooms;
 }

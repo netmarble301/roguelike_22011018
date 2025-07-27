@@ -1,6 +1,6 @@
 #include "Monster.h"
 
-Monster::Monster(POINT _p, int _hp, int _attack, int _defense) : monsterPoint(_p), monsterHp(_hp), monsterAttack(_attack), monsterDefense(_defense), rng(chrono::system_clock::now().time_since_epoch().count())
+Monster::Monster(POINT _p, int _hp, int _attack, int _defense) : monsterPoint(_p), monsterHp(_hp), monsterAttack(_attack), monsterDefense(_defense), rng(chrono::system_clock::now().time_since_epoch().count()), movePoint({-1,-1})
 {
 }
 
@@ -54,84 +54,24 @@ void Monster::setMonsterNum(int _num)
 	monsterNum = _num;
 }
 
+POINT Monster::getMovePoint() const
+{
+	return movePoint;
+}
+
+void Monster::setMovePoint(POINT _mp)
+{
+	movePoint = _mp;
+}
+
 Sphinx::Sphinx(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
 	setMonsterNum(4);
 }
 
-int Sphinx::monsterSkill()
+int Sphinx::monsterAction()
 {
 	return 0;
-}
-
-void Monster::monsterMove(GameMap& _map)
-{
-	if (getMonstertHp() <= 0)
-	{
-		//»ç¸Á
-		return;
-	}
-
-	uniform_int_distribution<int> monsterDirection(0, 3);
-	int direction;
-	POINT p = getMonsterPoint();
-	_map.setMapData(p, 0);
-	while (true)
-	{
-		direction = monsterDirection(rng);
-		switch (direction)
-		{
-		case 0: //¿ÞÂÊ
-			--p.x;
-			break;
-		case 1: //¿À¸¥ÂÊ
-			++p.x;
-			break;
-		case 2: //À§ÂÊ
-			--p.y;
-			break;
-		case 3: //¾Æ·¡ÂÊ
-			++p.y;
-			break;
-		}
-		if (_map.getMapData(p) == 0)
-		{
-			setMonsterPoint(p);
-			_map.setMapData(p, getMonsterNum());
-			break;
-		}
-		switch (direction) //p º¹±Í
-		{
-		case 0:
-			++p.x;
-			break;
-		case 1:
-			--p.x;
-			break;
-		case 2:
-			++p.y;
-			break;
-		case 3:
-			--p.y;
-			break;
-		}
-	}
-
-}
-
-void Monster::monsterChase(GameMap& _map)
-{
-
-}
-
-int Monster::monsterBasicAttack(GameMap& _map)
-{
-	return 0;
-}
-
-bool Monster::searchPlayer(GameMap& _map)
-{
-	return (_map.getPlayerPoint().x >= getMonsterPoint().x - 2 && _map.getPlayerPoint().x <= getMonsterPoint().x + 2 && _map.getPlayerPoint().y >= getMonsterPoint().y - 2 && _map.getPlayerPoint().y <= getMonsterPoint().y + 2);
 }
 
 Orc::Orc(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
@@ -139,7 +79,7 @@ Orc::Orc(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attac
 	setMonsterNum(5);
 }
 
-int Orc::monsterSkill()
+int Orc::monsterAction()
 {
 	return 0;
 }
