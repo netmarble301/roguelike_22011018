@@ -1,22 +1,12 @@
-﻿  GameLogic.cpp
-  GameManager.cpp
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(220,73): warning C4244: '인수': '_Rep'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(220,73): warning C4244:         with
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(220,73): warning C4244:         [
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(220,73): warning C4244:             _Rep=std::chrono::system_clock::rep
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(220,73): warning C4244:         ]
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(225,69): warning C4267: '인수': 'size_t'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(225,69): warning C4267:         with
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(225,69): warning C4267:         [
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(225,69): warning C4267:             _Ty=int
-C:\Users\KOREAIT\Desktop\프젝\roguelike\GameManager.cpp(225,69): warning C4267:         ]
-  Monster.cpp
-C:\Users\KOREAIT\Desktop\프젝\roguelike\Monster.cpp(3,206): warning C4244: '인수': '_Rep'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\KOREAIT\Desktop\프젝\roguelike\Monster.cpp(3,206): warning C4244:         with
-C:\Users\KOREAIT\Desktop\프젝\roguelike\Monster.cpp(3,206): warning C4244:         [
-C:\Users\KOREAIT\Desktop\프젝\roguelike\Monster.cpp(3,206): warning C4244:             _Rep=std::chrono::system_clock::rep
-C:\Users\KOREAIT\Desktop\프젝\roguelike\Monster.cpp(3,206): warning C4244:         ]
-  MonsterFactory.cpp
-  Player.cpp
-  코드를 생성하고 있습니다...
-  roguelike.vcxproj -> C:\Users\KOREAIT\Desktop\프젝\roguelike\x64\Debug\roguelike.exe
+﻿  GameManager.cpp
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(221,73): warning C4244: '인수': '_Rep'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(221,73): warning C4244:         with
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(221,73): warning C4244:         [
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(221,73): warning C4244:             _Rep=std::chrono::system_clock::rep
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(221,73): warning C4244:         ]
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(226,69): warning C4267: '인수': 'size_t'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(226,69): warning C4267:         with
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(226,69): warning C4267:         [
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(226,69): warning C4267:             _Ty=int
+C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\GameManager.cpp(226,69): warning C4267:         ]
+  roguelike.vcxproj -> C:\Users\KOREAIT\Desktop\프젝\roguelike_22011018\roguelike\x64\Debug\roguelike.exe

@@ -15,7 +15,7 @@ protected:
 
 class Monster// : public Actor //추상 클래스
 {
-
+//상속보단 이게 더 나음
 //private:
 //	Actor* m_ActorData;
 

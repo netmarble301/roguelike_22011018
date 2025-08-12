@@ -68,5 +68,8 @@ protected:
 
 
 
+protected:
+    void Test_DebugMob();
+
 };
 

@@ -2,6 +2,11 @@
 
 GameMap::GameMap() : rng(chrono::system_clock::now().time_since_epoch().count()) //현재 시간으로 난수 시드 설정
 {
+
+    auto seedval = chrono::system_clock::now().time_since_epoch().count();
+    rng.seed(seedval);
+
+    
 	generateMap();
 }
 

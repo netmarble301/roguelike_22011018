@@ -47,6 +47,10 @@ void GameManager::initializeGame()
     }
     sphinxFactory.reset();
     orcFactory.reset();
+
+
+
+    Test_DebugMob();
 }
 
 void GameManager::nextFloor()
@@ -82,17 +86,18 @@ void GameManager::setCurrentFloor(int _floor)
 
 void GameManager::monsterTurn(HWND hWnd)
 {
+    int hp;
     for (auto& monster_ptr : monsters)
     {
         if (checkAround((*monster_ptr).getMonsterPoint())) //공격
         {
-            int hp = getPlayer().getPlayerHp();
+            hp = getPlayer().getPlayerHp();
             getPlayer().setPlayerHp(hp - (*monster_ptr).getMonsterAttack());
             getMap().setMapData(getPlayer().getPlayerPoint(), MapDataType::PLAYER_ATTACKED);
 
-            SetTimer(hWnd, 3, 500, NULL);
+            SetTimer(hWnd, 3, 100, NULL);
         }
-        if (searchPlayer(monster_ptr->getMonsterPoint()))
+        else if (searchPlayer(monster_ptr->getMonsterPoint()))
         {
             monsterChase(*monster_ptr);
         }
@@ -296,9 +301,6 @@ int GameManager::UpdateKeyDown(WPARAM p_param, HWND hWnd)
             }
         }
 
-        //죽은 몬스터 처리
-        //monsters.erase(remove_if(monsters.begin(), monsters.end(),[](const auto& monster_ptr) {return monster_ptr->getMonstertHp() <= 0;}),monsters.end());
-
         playerAction = false;
         InvalidateRect(hWnd, NULL, FALSE);
         return 2;
@@ -441,4 +443,8 @@ bool GameManager::checkAround(const POINT& p) const
         }
     }
     return false; // 대상이 없으면 false 반환
+}
+
+void GameManager::Test_DebugMob()
+{
 }

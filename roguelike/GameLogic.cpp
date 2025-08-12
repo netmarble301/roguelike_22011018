@@ -59,7 +59,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	}
 
 	//GDI+ 종료(ImageManager의 소멸자에 구현하는 것보다 여기에 구현하는 것이 더 좋음)
-	GdiplusShutdown(gdiplusToken);
+	GdiplusShutdown(gdiplusToken); //delete기능
 
 	return (int)Message.wParam;							//탈출 코드. 프로그램 종료
 }
@@ -139,10 +139,7 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 	//던전 층수, 플레이어 상태 등 출력하기
 	/*
 	wstringstream ss4;
-	for (size_t i = 0; i < manager.getMonsters().size(); i++)
-	{
-		ss4 << L"몬스터 : " << (*manager.getMonsters()[i]).getMonstertHp();
-	}
+	
 	const wstring ws_Text4 = ss4.str(); //wstring으로 변환
 	const TCHAR* char_Text4 = ws_Text4.c_str(); //TCHAR* (const wchar_t* 또는 const char*)로 변환
 	graphics.DrawString(char_Text4, -1, &font, PointF(680, 50), &textBrush);

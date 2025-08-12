@@ -11,7 +11,6 @@ ImageManager::~ImageManager()
 	{
 		if (iter->second)
 		{
-			delete iter->second; //이미지 해제
 			iter->second = nullptr; //포인터 nullptr 초기화
 		}
 	}
@@ -70,5 +69,4 @@ void ImageManager::imageInitialize()
 	blockImages[9] = Image::FromFile(L"stone_arrow_0.png");
 	blockImages[10] = Image::FromFile(L"stone_arrow_2.png");
 	blockImages[11] = Image::FromFile(L"stone_arrow_4.png");
-
 }
