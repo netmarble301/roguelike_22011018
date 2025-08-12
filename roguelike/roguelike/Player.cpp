@@ -16,7 +16,7 @@ void Player::setPlayerHp(int _hp)
 
 int Player::getPlayerAttack() const
 {
-    return playerHp;
+    return playerAttack;
 }
 
 void Player::setPlayerAttack(int _attack)

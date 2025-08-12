@@ -8,6 +8,7 @@
 //#include <chrono> //chrono::high_resolution_clock
 //#include <algorithm> //reverse
 #include <iostream>
+#include <memory>
 //using namespace std;
 
 //나중에 이것을 싱글톤으로 구현?
@@ -63,5 +64,7 @@ public:
 	virtual ~A_Star_Algorithm() = default;
 
 	vector<POINT> findPath(const GameMap& _map, POINT _start, POINT _end); //최단 경로 반환
+
+	// 7/29 콜백함수? 템플릿, 장애물 무엇으로 기준을 잡을 건지 결정?
 };
 

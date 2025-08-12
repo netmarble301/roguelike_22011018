@@ -108,7 +108,7 @@ void GamePaint(HWND hWnd, PAINTSTRUCT ps)
 			int blockDrawY = mapStartY + (y * BLOCK_SIZE);
 			p = { x,y };
 			// 맵 데이터에 따라 적절한 블록 이미지 선택 및 그리기
-			graphics.DrawImage(ImgManager.getImage(manager.getMap().getMapData(p)), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
+			graphics.DrawImage(ImgManager.getImage((int)manager.getMap().getMapData(p)), blockDrawX, blockDrawY, BLOCK_SIZE, BLOCK_SIZE);
 		}
 	}
 
@@ -155,8 +155,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	switch (iMessage) 
 	{
+	case WM_TIMER:
+		manager.setTimer(wParam, hWnd);
+		return 0;
 	case WM_CREATE:
 		manager.initializeGame();
+		
 		return 0;
 
 	case WM_PAINT:
@@ -164,80 +168,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_KEYDOWN:
-		playerPoint = manager.getPlayer().getPlayerPoint();
-		manager.getMap().setMapData(playerPoint, 0);
-		switch (wParam)
+
+		switch(manager.UpdateKeyDown(wParam, hWnd))
 		{
-		case VK_LEFT: // 왼쪽 방향키
-			--playerPoint.x;
-			mapData = manager.getMap().getMapData(playerPoint);
-			if (mapData == 0 || mapData == 2)
-			{
-				manager.getPlayer().setPlayerPoint(playerPoint);
-			}
-			else
-			{
-				++playerPoint.x;
-			}
+		case 1:
+			SetTimer(hWnd, 1, 500, NULL);
 			break;
-		case VK_RIGHT: // 오른쪽 방향키
-			++playerPoint.x;
-			mapData = manager.getMap().getMapData(playerPoint);
-			if (mapData == 0 || mapData == 2)
-			{
-				manager.getPlayer().setPlayerPoint(playerPoint);
-			}
-			else
-			{
-				--playerPoint.x;
-			}
+		case 2:
+			SetTimer(hWnd, 2, 500, NULL);
 			break;
-		case VK_UP: // 위쪽 방향키
-			--playerPoint.y;
-			mapData = manager.getMap().getMapData(playerPoint);
-			if (mapData == 0 || mapData == 2)
-			{
-				manager.getPlayer().setPlayerPoint(playerPoint);
-			}
-			else
-			{
-				++playerPoint.y;
-			}
-			break;
-		case VK_DOWN: // 아래쪽 방향키
-			++playerPoint.y;
-			mapData = manager.getMap().getMapData(playerPoint);
-			if (mapData == 0 || mapData == 2)
-			{
-				manager.getPlayer().setPlayerPoint(playerPoint);
-			}
-			else
-			{
-				--playerPoint.y;
-			}
-			break;
-		}
-		if (mapData == 2)
-		{
-			manager.nextFloor();
-		}
-		else
-		{
-			manager.getMap().setMapData(playerPoint, 3);
+		
+		default:
+			break; // 방향키가 아닌 다른 키는 무시
 		}
 
-		//플레이어 기본 공격, 스킬 키를 무엇으로?
-		//~
+		
 
-		//몬스터 턴
-		//if (manager.)
-		manager.monsterTurn();
-
-		InvalidateRect(hWnd, NULL, FALSE);
+		
 		return 0;
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		return 0;
+
+	case WM_CLOSE:
+		DestroyWindow(hWnd);
 		return 0;
 	}
 	return(DefWindowProc(hWnd, iMessage, wParam, lParam));

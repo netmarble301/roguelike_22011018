@@ -5,14 +5,14 @@ GameMap::GameMap() : rng(chrono::system_clock::now().time_since_epoch().count())
 	generateMap();
 }
 
-int GameMap::getMapData(POINT _p) const
+MapDataType GameMap::getMapData(POINT _p) const
 {
-    return (int)mapDataArr[_p.y][_p.x];
+    return mapDataArr[_p.y][_p.x];
 }
 
-void GameMap::setMapData(POINT _p, int _c)
+void GameMap::setMapData(POINT _p, MapDataType _d)
 {
-    mapDataArr[_p.y][_p.x] = (MapDataType)_c;
+    mapDataArr[_p.y][_p.x] = _d;
 }
 
 void GameMap::initializeMap() 
@@ -192,7 +192,7 @@ void GameMap::placeObject() //오브젝트 랜덤 배치
     int pX = pXDist(rng);
     int pY = pYDist(rng);
     playerPoint = { pX,pY };
-    setMapData(playerPoint, 3);
+    setMapData(playerPoint, MapDataType::PLAYER);
 
     //플로어 배치
     const GameRoom& fRoom = rooms[1]; //무작위 방 선택
@@ -202,7 +202,7 @@ void GameMap::placeObject() //오브젝트 랜덤 배치
     int fX = fXDist(rng);
     int fY = fYDist(rng);
     POINT f = { fX,fY };
-    setMapData(f, 2);
+    setMapData(f, MapDataType::FLOOR);
 
     //몬스터 배치
     uniform_int_distribution<int> numMonstersDist(2, 4); //2개에서 4개의 몬스터
@@ -226,10 +226,10 @@ void GameMap::placeObject() //오브젝트 랜덤 배치
             mX = mXDist(rng);
             mY = mYDist(rng);
             mPos = { mX,mY };
-        } while (getMapData(mPos) != 0); //EMPTY인 블럭에만 배치
+        } while (getMapData(mPos) != MapDataType::EMPTY); //EMPTY인 블럭에만 배치
 
         uniform_int_distribution<int> monsterTypeDist(4, 5); //몬스터 종류 결정
-        int randomMonsterValue = monsterTypeDist(rng);
+        MapDataType randomMonsterValue = (MapDataType)monsterTypeDist(rng);
         setMapData(mPos, randomMonsterValue);
     }
 }

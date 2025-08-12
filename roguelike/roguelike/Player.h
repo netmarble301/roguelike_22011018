@@ -8,11 +8,9 @@ private:
 	int playerHp;
 	int playerAttack;
 	int playerDefense;
-
 public:
 	Player(POINT _p, int _hp, int _attack, int _defense);
 	virtual ~Player() = default;
-
 	int getPlayerHp() const;
 	void setPlayerHp(int _hp);
 	int getPlayerAttack() const;
@@ -21,7 +19,5 @@ public:
 	void setPlayerDefense(int _defense);
 	POINT getPlayerPoint() const;
 	void setPlayerPoint(POINT _p);
-
-	//플레이어 action(기본 공격 or 스킬)함수 구현
 };
 

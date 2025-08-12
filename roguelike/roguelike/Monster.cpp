@@ -44,12 +44,12 @@ void Monster::setMonsterPoint(POINT _p)
 	monsterPoint = _p;
 }
 
-int Monster::getMonsterNum() const
+MapDataType Monster::getMonsterNum() const
 {
 	return monsterNum;
 }
 
-void Monster::setMonsterNum(int _num)
+void Monster::setMonsterNum(MapDataType _num)
 {
 	monsterNum = _num;
 }
@@ -66,7 +66,7 @@ void Monster::setMovePoint(POINT _mp)
 
 Sphinx::Sphinx(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
-	setMonsterNum(4);
+	setMonsterNum(MapDataType::SPHINX);
 }
 
 int Sphinx::monsterAction()
@@ -76,7 +76,7 @@ int Sphinx::monsterAction()
 
 Orc::Orc(POINT _p, int _hp, int _attack, int _defense) : Monster(_p, _hp, _attack, _defense)
 {
-	setMonsterNum(5);
+	setMonsterNum(MapDataType::ORC);
 }
 
 int Orc::monsterAction()

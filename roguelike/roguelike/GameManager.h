@@ -1,7 +1,26 @@
 #pragma once
+//#include <windows>
 #include "Player.h"
 #include "MonsterFactory.h"
 #include "A_Star_Algorithm.h"
+#include <winuser.h>
+
+//상태 이건 나중에
+enum class E_INGAME_STATETYPE
+{
+    IDLE,
+    KEYINPUT,
+    PLAYERMOVE,
+    PLAYERMOVEEND,
+    PLAYATTACK,
+    //PLAY_
+
+    MOBMOVE,
+    MOBMOVEEND,
+    MOBATTACK,
+
+};
+
 
 class GameManager
 {
@@ -26,11 +45,25 @@ public:
     int getCurrentFloor() const;
     void setCurrentFloor(int _floor);
 
-    void monsterTurn();
+    void monsterTurn(HWND hWnd);
     bool searchPlayer(const POINT& _mp) const;
     void monsterMove(Monster& _m);
-    void monsterChase();
+    void monsterChase(Monster& _m);
 
     POINT getRandomEmptyPoint() const;
+
+    //void playerAttack();
+
+    int UpdateKeyDown(WPARAM p_param, HWND hWnd);
+    //void ResetPlayerKeyDown() { m_ISPlayerTurn = false; }
+    void setTimer(WPARAM p_param, HWND hWnd);
+
+
+    bool checkAround(const POINT& p) const;
+
+protected:
+    bool m_ISPlayerTurn = true;
+    bool playerMove = false;
+    bool playerAction = false;
 };
 

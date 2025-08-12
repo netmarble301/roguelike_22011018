@@ -17,7 +17,6 @@ inline bool operator==(const POINT& p1, const POINT& p2) {
 	return p1.x == p2.x && p1.y == p2.y;
 }
 
-
 enum class MapDataType
 {
 	EMPTY=0,
@@ -25,7 +24,14 @@ enum class MapDataType
 	FLOOR,
 	PLAYER,
 	SPHINX,
-	ORC
+	ORC,
+	SPHINX_ATTACKED,
+	ORC_ATTACKED,
+	RIGHT,
+	UP,
+	LIGHT,
+	DOWN,
+	PLAYER_ATTACKED
 };
 
 struct GameRoom
@@ -54,8 +60,9 @@ public:
 	GameMap();
 	virtual ~GameMap() = default;
 
-	int getMapData(POINT _p) const;
-	void setMapData(POINT _p, int _c);
+	MapDataType getMapData(POINT _p) const;
+	//void setMapData(POINT _p, int _c); //이거 인자를 MapDataType으로 할까?
+	void setMapData(POINT _p, MapDataType _d);
 
 	void initializeMap(); //맵을 1로 초기화
 	void generateMap(); //맵 생성 전체 로직

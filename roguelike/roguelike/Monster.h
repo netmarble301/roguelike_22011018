@@ -8,7 +8,7 @@ private:
 	int monsterHp;
 	int monsterAttack;
 	int monsterDefense;
-	int monsterNum = -1;
+	MapDataType monsterNum;
 	POINT movePoint; //·£´ý ÀÌµ¿ÇÒ ÁÂÇ¥
 
 	mt19937 rng;
@@ -25,8 +25,8 @@ public:
 	void setMonsterDefense(int _defense);
 	POINT getMonsterPoint() const;
 	void setMonsterPoint(POINT _p);
-	int getMonsterNum() const;
-	void setMonsterNum(int _num);
+	MapDataType getMonsterNum() const;
+	void setMonsterNum(MapDataType _num);
 
 	POINT getMovePoint() const;
 	void setMovePoint(POINT _mp);

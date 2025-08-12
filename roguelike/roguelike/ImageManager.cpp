@@ -50,12 +50,25 @@ void ImageManager::imageInitialize()
 
 	//플레이어
 	blockImages[3] = Image::FromFile(L"angel.png");
+	blockImages[12] = Image::FromFile(L"angel_attacked.png");
+	
 
 	//몬스터
 	blockImages[4] = Image::FromFile(L"sphinx.png");
 	blockImages[5] = Image::FromFile(L"orc.png");
+	blockImages[6] = Image::FromFile(L"sphinx_attacked.png");
+	blockImages[7] = Image::FromFile(L"orc_attacked.png");
+
 	//...
 
 	//아이템
 	//...
+
+	//impact
+	//blockImages[8] = Image::FromFile(L"cloud_forest_fire.png");
+	blockImages[8] = Image::FromFile(L"stone_arrow_6.png");
+	blockImages[9] = Image::FromFile(L"stone_arrow_0.png");
+	blockImages[10] = Image::FromFile(L"stone_arrow_2.png");
+	blockImages[11] = Image::FromFile(L"stone_arrow_4.png");
+
 }
